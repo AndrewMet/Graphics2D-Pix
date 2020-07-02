@@ -21,7 +21,7 @@ class Graphics2D
             for (let j = 0; j <= this.H; j++)
             {
                 let stepx = this.W / (-this.xmin + this.xmax), stepy = this.H / (-this.ymin + this.ymax),
-                    zerox = Math.abs(this.xmin) * stepx, zeroy = Math.abs(this.ymin) * stepy;
+                    zerox = -this.xmin * stepx, zeroy = this.ymax * stepy;
                 let truex = (i-zerox)/stepx;
                 let truey = (zeroy-j)/stepy;
                 let res = this.f(truex, truey);
@@ -59,8 +59,8 @@ class Graphics2D
         this.evaluate();
         if(this.spectrumON == 1) this.spectrum();
         let stepx = this.W / (-this.xmin + this.xmax), stepy = this.H / (-this.ymin + this.ymax),
-            zerox = Math.abs(this.xmin) * stepx, zeroy = Math.abs(this.ymin) * stepy;
-        if(!this.spectrumON) ctx.fillStyle = bg; else ctx.fillStyle = "black";
+            zerox = -this.xmin * stepx, zeroy = this.ymax * stepy;
+        ctx.fillStyle = "black";
         ctx.fillRect(0, 0, this.W, this.H);
         ctx.beginPath();
         ctx.lineWidth = 2;
@@ -138,12 +138,9 @@ class Graphics2D
         ctx.fillText(
             mx,
             zerox + this.xmax * stepx - (25 * mx.length) / 1.8,
-            zeroy + this.ymin * stepy + 25
+            zeroy - this.ymax * stepy + 25
         );
-        ctx.fillText(
-            mn, zerox + this.xmin * stepx,
-            zeroy + this.ymax * stepy
-        );
+        ctx.fillText(mn, zerox + this.xmin * stepx, zeroy - this.ymin * stepy);
 
 
     }
